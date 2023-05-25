@@ -8,7 +8,7 @@ const {
     filterBlogs,
     updateBlog,
     deleteBlog,
-    deleteBlog1
+    deleteBlogQuery
 } = require('../controller/blogController')
 
 // Create Author
@@ -30,7 +30,7 @@ router.put('/blogs/:blogId',updateBlog)
 router.delete('/blogs/:blogId', deleteBlog)
 
 // Delete Blog with filter
-router.delete('/blogs', deleteBlog1)
+router.delete('/blogs', deleteBlogQuery)
 
 
 module.exports = router;
