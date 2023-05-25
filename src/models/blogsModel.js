@@ -11,12 +11,13 @@ const blogSchema = new mongoose.Schema({
             required : true
         },
         authorId : {
+            type : mongoose.Schema.Types.ObjectId,
             ref : "Author",
-            type : mongoose.Schema.Types.Mixed,
             required : true,
         },
         tags : {
             type : [String],
+            required : true
         },
         category : {
             type : String,
@@ -25,7 +26,7 @@ const blogSchema = new mongoose.Schema({
         },
         subcategory : {
             type : [String],
-
+            required : true
         },
         deletedAt : {
             type : Date,

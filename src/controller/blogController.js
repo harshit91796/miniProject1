@@ -28,25 +28,21 @@ const createBlog = async (req,res) => {
             return res.status(400).send({msg : 'blog subcategory is required'})
         }
 
-        const validId = await Author.findById(data.authorId);
+        const validId = await Author.findById(req.body.authorId);
         if(validId){
-            const blog = await Blog.create(data);
-            return res.status(201).send({
-              status: true,
-              msg : 'blog is succesfully created',
-              data : blog
-            })
+            const blog = await Blog.create(req.body);
+            res.status(201).send({data : blog, msg : 'blog is succesfully created'})
         }
        else{
-        return res.status(404).send({
-            status : false,
-            message : 'author not found'
-        })
+        res.status(400).send({message : 'maybe author id is not valid'})
        }
         
     } catch (error) {
-        res.status(500).send({msg : error.message})
-    }
+      res.status(500).json({
+        status:false,
+        message:error.mesage
+      });
+  }
 }
 
 const blogs = async (req,res)=>{
@@ -132,70 +128,46 @@ const filterBlogs = async (req, res) => {
             data: updatedblog
         });
     } catch (err) {
-        res.status(500).send(err);
+        res.status(500).send({
+          status: false,
+          message: err.message
+        });
     }
 }
 
 const deleteBlog = async function(req,res){
   let id = req.params.blogId
-  const date = new Date()
   let result = await Blog.findById(id)
   if(!result) {return res.status(404).send({status: false, msg: "Id not found"})}
 
-  const dateUp = {deletedAt : date}
-  const isdeletd = { isDeleted :true}
+  const dateUp = {deletedAt : new Date(), isDeleted :true}
   try{
-      await Blog.updateOne(
-          {_id:id},
-          {$set : dateUp},
-          {new :true}
-      )
-      await Blog.updateOne(
-          {_id:id},
-          {$set : isdeletd},
-          {new :true}
-      )
-      res.status(200).send({
-        status:true
-    })
+      await Blog.updateOne({_id:id}, {$set : dateUp})
+      res.status(200).send({status:true})
   }
   catch(error){
-      res.status(500).json({
-        message:error.message
-    })
+      res.status(500).json({message:error.message})
   }    
 }
 
 const deleteBlogQuery = async function(req,res){
-    let filters = req.query
-    let result = await Blog.findOne(filters)
-    console.log(result)
-    if(!result) {return res.status(404).send({status: false, msg: "Id not found"})}
-    let id = result._id
   
-    const date = new Date()
-    const dateUp = {deletedAt : date}
-    const isdeletd = { isDeleted :true}
-    try{
-        await Blog.updateOne(
-            {_id:id},
-            {$set : dateUp},
-            {new :true}
-        )
-        await Blog.updateOne(
-            {_id:id},
-            {$set : isdeletd},
-            {new :true}
-        )
-        res.status(200).send({status:true})
-    }
-    catch(error){
-        res.status(500).json({
-            message:error.message
-        })
-    }    
+  let filters = req.query
+  let result = await Blog.findOne(filters)
+  if(!result) {return res.status(404).send({status: false, msg: "Id not found"})}
+  let id = result._id
+  const dateUp = {deletedAt : new Date(), isDeleted :true}
+  try{
+      await Blog.updateOne({_id:id},
+          {$set : dateUp},
+          {new :true}
+      )
+      res.status(200).send({status:true})
   }
-
+  catch(error){
+      res.status(500).json({message:error.message})
+  }    
+}
 
 module.exports = {
   createBlog,
