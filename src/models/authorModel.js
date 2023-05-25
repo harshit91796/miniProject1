@@ -19,8 +19,7 @@ const authorSchema = new mongoose.Schema({
             type : String,
             required : true,
             unique : true,
-            // validate: [ email, 'invalid email' ],
-
+            // match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
             validate: {
                 validator: (value) => validator.isEmail(value),
                 message: (props) => `${props.value} is not a valid email address.`
