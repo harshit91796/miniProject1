@@ -82,8 +82,6 @@ const filterBlogs = async (req, res) => {
         for (const key in req.query) {
           if (key) {
             filters[key] = { $in: req.query[key].split(',') };
-          } else {
-            filters[key] = req.query[key];
           }
         }
         const blogs = await Blog.find(filters);
