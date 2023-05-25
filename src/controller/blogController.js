@@ -35,26 +35,23 @@ const blogs = async (req,res)=>{
 };
 
 const filterBlogs = async (req, res) => {
+  
     try {
-      const filter = {};
-
-      if (req.query.authorId) {
-        filter._id = req.query.authorId;
+        const filters = {};
+    
+        for (const key in req.query) {
+          if (key) {
+            filters[key] = { $in: req.query[key].split(',') };
+          } else {
+            filters[key] = req.query[key];
+          }
+        }
+        const blogs = await Blog.find(filters);
+        res.status(200).json({ status: true, message: "Blogs List", data: blogs });
+      } catch (error) {
+        res.status(404).json({ status: false, message: error.message });
       }
-      if (req.query.category) {
-        filter.category = req.query.category;
-      }
-      if (req.query.tags) {
-        filter.tags = req.query.tags;
-      }
-      if (req.query.subCategory) {
-        filter.subCategory = req.query.subCategory;
-      }
-      const result = await Blog.find(filter);
-      res.status(200).json({ status: true, message: "Blogs List", data: result });
-    } catch (error) {
-      res.status(404).json({ status: false, message: error.message.toString() });
-    }
+  
   };
 
   const updateBlog = async (req, res) => {
