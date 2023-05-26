@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router();
-const {createAuthor} = require("../controller/authorController")
+const {createAuthor, login} = require("../controller/authorController")
+
+const { authenticate, authorize } = require("../middleware/auth")
 
 const { 
     createBlog,
@@ -14,23 +16,26 @@ const {
 // Create Author
 router.post('/authors',createAuthor)
 
+// Login Author
+router.post('/login', login)
+
 // Create Blog
-router.post('/blogs',createBlog)
+router.post('/blogs', authenticate, createBlog)
 
 // Get All Blog
-router.get('/blogs',blogs)
+router.get('/blogs', authenticate, blogs)
 
 // Filter Blog
-router.get('/filter',filterBlogs)
+router.get('/filter', authenticate, filterBlogs)
 
 // Update Blog
-router.put('/blogs/:blogId',updateBlog)
+router.put('/blogs/:blogId', authorize, updateBlog)
 
 // Delete Blog with id
-router.delete('/blogs/:blogId', deleteBlog)
+router.delete('/blogs/:blogId', authorize, deleteBlog)
 
 // Delete Blog with filter
-router.delete('/blogs', deleteBlogQuery)
+router.delete('/blogs', authenticate, deleteBlogQuery)
 
 
 module.exports = router;
