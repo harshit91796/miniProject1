@@ -5,7 +5,6 @@ const bcrypt = require('bcrypt');
 const auth = async (req,res)=>{
     const {email,password} = req.body;
     const user = await Author.findOne({email:email});
-    console.log(user)
     if(!user) return res.status(404).send("invalid user!");
     const hashPass = await bcrypt.compare(password,user.password);
     if(hashPass===true){
@@ -14,7 +13,14 @@ const auth = async (req,res)=>{
             });
         res.setHeader("x-api-key", token);
         res.status(202).json({status:true,data:token})};
+        next()
     };
     
+    const auth2 = async(req,res)=>{
+        const token = req.headers.authorization.split(" ")[1];
+        if(!token) return res.status(404).json({status:false,error:error.message,message:"invalid token!!"});
+        res.setHeaders("x-api-key", token);
+        next()
+    };
     
-    module.exports = {auth};
+    module.exports = {auth,auth2};

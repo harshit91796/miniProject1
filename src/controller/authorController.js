@@ -1,5 +1,4 @@
 const Author = require('../models/authorModel')
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const createAuthor =async (req,res)=>{
@@ -26,4 +25,4 @@ const login = async (req,res)=>{
 
 
 
-module.exports = {createAuthor}
+module.exports = {createAuthor,login}

@@ -27,7 +27,6 @@ const blogs = async (req,res)=>{
         if(!result){
             res.status(404).send({status : false ,message : "blog not found"})
         }
-        
         res.status(200).json({status:true,message:"Blogs List",data:result});
     } catch (error) {
         res.status(404).json({status:false,message:error.mesage});
@@ -58,7 +57,6 @@ const filterBlogs = async (req, res) => {
     try {
         let blogId = req.params.blogId;
         let data = req.body;
-    
         let blog = await Blog.findOne({ _id: blogId, isDeleted: false });
         if (!blog) {
             return res.status(404).send({ 
