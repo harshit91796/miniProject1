@@ -16,5 +16,11 @@ const auth = async (req,res)=>{
         res.status(202).json({status:true,data:token})};
     };
     
-    
-    module.exports = {auth};
+    const auth2 = async(req,res)=>{
+        const token = req.headers.authorization.split(" ")[1];
+        if(!token) return res.status(404).json({status:false,error:error.message,message:"invalid token!!"});
+        res.setHeaders("x-api-key", token);
+        next()
+    };
+
+    module.exports = {auth,auth2};

@@ -26,4 +26,4 @@ const login = async (req,res)=>{
 
 
 
-module.exports = {createAuthor}
+module.exports = {createAuthor,login}
