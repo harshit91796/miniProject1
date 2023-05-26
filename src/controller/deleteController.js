@@ -1,4 +1,5 @@
 const Author = require('../models/blogsModel')
+const Blog = require('../models/blogsModel')
 
 const deleteBlog = async function(req,res){
     let id = req.params.blogId

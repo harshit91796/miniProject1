@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const Author = require('../models/authorModel');
 const bcrypt = require('bcrypt');
 
-const auth = async (req,res)=>{
+const auth = async (req,res,next)=>{
     const {email,password} = req.body;
     const user = await Author.findOne({email:email});
     console.log(user)
@@ -14,6 +14,7 @@ const auth = async (req,res)=>{
             });
         res.setHeader("x-api-key", token);
         res.status(202).json({status:true,data:token})};
+        next();
     };
     
     const auth2 = async(req,res)=>{
