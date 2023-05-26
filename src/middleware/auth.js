@@ -62,9 +62,6 @@ const authorize = async (req, res, next) => {
         });
       }
   
-      console.log(blog);
-      console.log(req.authorId);
-  
       if (blog.authorId.toString() !== req.authorId) {
         return res.status(403).json({
           success: false,
@@ -81,5 +78,6 @@ const authorize = async (req, res, next) => {
       });
     }
   };
+
 
 module.exports = { authenticate, authorize };

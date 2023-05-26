@@ -6,9 +6,6 @@ const createBlog = async (req,res) => {
     try {
         let data = req.body;
 
-        if(!data) {
-            return res.status(400).send({msg : 'blog data is required'})
-        }
         if(!data.title){
             return res.status(400).send({msg : 'blog title is required'})
         }
@@ -45,41 +42,19 @@ const createBlog = async (req,res) => {
   }
 }
 
-const blogs = async (req,res)=>{
-    try {
-        const result = await Blog.find({$and:[
-            {isDeleted:false},
-            {isPublished:true}
-        ]}); 
-        if(!result){
-            return res.status(404).send({
-              status : false ,
-              message : "blog not found"
-            })
-        }
-        
-        res.status(200).json({
-          status:true,
-          message:"Blogs List",
-          data:result
-        });
-    } catch (error) {
-        res.status(500).json({
-          status:false,
-          message:error.mesage
-        });
-    }
-};
-
-const filterBlogs = async (req, res) => {
+const blogs = async (req, res) => {
     try {
         const filters = {};
-    
         for (const key in req.query) {
-          if (key) {
-            filters[key] = { $in: req.query[key].split(',') };
-          }
+            if (key == 'tags' || key == 'subcategory') {
+                filters[key] = { $in: req.query[key].split(',') };
+            } else {
+                filters[key] = req.query[key];
+            }
         }
+        
+        filters["isDeleted"] = false
+        filters["isPublished"] = true
         const blogs = await Blog.find(filters);
         res.status(200).json({ 
           status: true, 
@@ -172,7 +147,6 @@ const deleteBlogQuery = async function(req,res){
 module.exports = {
   createBlog,
   blogs,
-  filterBlogs,
   updateBlog,
   deleteBlog,
   deleteBlogQuery

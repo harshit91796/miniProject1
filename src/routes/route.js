@@ -7,7 +7,6 @@ const { authenticate, authorize } = require("../middleware/auth")
 const { 
     createBlog,
     blogs,
-    filterBlogs,
     updateBlog,
     deleteBlog,
     deleteBlogQuery
@@ -24,9 +23,6 @@ router.post('/blogs', authenticate, createBlog)
 
 // Get All Blog
 router.get('/blogs', authenticate, blogs)
-
-// Filter Blog
-router.get('/filter', authenticate, filterBlogs)
 
 // Update Blog
 router.put('/blogs/:blogId', authorize, updateBlog)
