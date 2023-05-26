@@ -16,11 +16,17 @@ const auth = async (req,res)=>{
         next()
     };
     
-    const auth2 = async(req,res)=>{
+    const auth2 = async(req,res,next)=>{
+        try {
         const token = req.headers.authorization.split(" ")[1];
-        if(!token) return res.status(404).json({status:false,error:error.message,message:"invalid token!!"});
-        res.setHeaders("x-api-key", token);
+        if(!token) return ressend({status:false,message:"invalid token!"});
+        const decoding = jwt.verify(token, "secret-key");
+        const theUser = await Author.findById(decoding._id);
+        req.Author = theUser;
         next()
+        } catch (error) {
+        res.status(404).send({error:error.message});
+        }
     };
     
     module.exports = {auth,auth2};
