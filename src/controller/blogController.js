@@ -39,7 +39,6 @@ const createBlog = async function(req,res){
 
 const blogs = async (req, res) => {
     try {
-        
       const filters = {};
       for (const key in req.query) {
         if (key == 'tags' || key == 'subcategory') {
@@ -48,18 +47,11 @@ const blogs = async (req, res) => {
            filters[key] = req.query[key];
          }
       }
-      console.log(filters)
+      
       filters["isDeleted"] = false
       filters["isPublished"] = true
-      
-    //   const body = await Blog.find(req.query.body)
 
-
-
-      const result = await Blog.find({$or : [{body : filters.body},{tags : filters.tags},{category : filters.category},{subcategory: filters.subcategory},{authorId : filters.authorId}]});
-      if(result.length === 0){
-        res.status(404).send("No data is found related to that or you didint provide any")
-      }
+      const result = await Blog.find(filters);
       res.status(200).json({ status: true, message: "Blogs List", data: result });
     } catch (error) {
       res.status(500).json({ status: false, message: error.message.toString() });
@@ -121,10 +113,9 @@ const deleteBlog = async function(req,res){
   }    
 }
 
-const deleteBlogQuery = async function(req,res){
-    
+const deleteBlogQuery = async function(req,res){  
 //   let filters = req.query
-const filters = {};
+    const filters = {};
       for (const key in req.query) {
         if (key == 'tags' || key == 'subcategory') {
           filters[key] = { $in: req.query[key].split(',') };
