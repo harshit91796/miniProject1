@@ -1,6 +1,35 @@
 const Author = require('../models/blogsModel')
 const Blog = require('../models/blogsModel')
 
+const restore = async function(req,res){
+    try {
+        const data = await Blog.findOne({isDeleted : true})
+        console.log(data)
+      if(data === null){
+        return res.send("there is no deleted data")
+      }
+    //   await Blog.updateOne({_id : data._id},{$set : {isDeleted : false}},{new : true})
+      
+    const update = await Promise.all(data.map(async(x)=>{
+          
+        const up = await Blog.updateOne({_id : x._id},{$set : {isDeleted : false}},{new : true})
+        
+        return up
+
+    }))
+    res.send("restored")
+
+    } catch (error) {
+        
+        res.send(error)
+    }
+
+
+}
+
+
+
+
 const deleteBlog = async function(req,res){
     let id = req.params.blogId
     let result = await Blog.findById(id)
@@ -35,4 +64,4 @@ const deleteBlog = async function(req,res){
     }    
   }
 
-module.exports = {deleteBlog,deleteBlogQuery}
+module.exports = {deleteBlog,deleteBlogQuery,restore}

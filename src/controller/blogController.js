@@ -49,7 +49,7 @@ const filterBlogs = async (req, res) => {
         const blogs = await Blog.find(filters);
         res.status(200).json({ status: true, message: "Blogs List", data: blogs });
       } catch (error) {
-        res.status(404).json({ status: false, message: error.message });
+        res.status(500).json({ status: false, message: error.message });
       }
   
   };
