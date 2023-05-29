@@ -113,7 +113,19 @@ const blogs = async (req, res) => {
 const deleteBlog = async function(req,res){
   let id = req.params.blogId
   let result = await Blog.findById(id)
-  if(!result) {return res.status(404).send({status: false, msg: "Id not found"})}
+  if(!result) {
+    return res.status(404).send({
+        status: false, 
+        msg: "Blog not found"
+    })
+  }
+
+  if(result.isDeleted) {
+    return res.status(404).send({
+        status: false, 
+        msg: "Blog is already deleted"
+    })
+  }
 
   const dateUp = {deletedAt : new Date(), isDeleted :true}
   try{
@@ -129,7 +141,18 @@ const deleteBlogQuery = async function(req,res){
   
   let filters = req.query
   let result = await Blog.findOne(filters)
-  if(!result) {return res.status(404).send({status: false, msg: "Id not found"})}
+  if(!result) {
+    return res.status(404).send({
+        status: false, 
+        msg: "Blog not found"
+    })
+  }
+  if(result.isDeleted) {
+    return res.status(404).send({
+        status: false, 
+        msg: "Blog is already deleted"
+    })
+  }
   let id = result._id
   const dateUp = {deletedAt : new Date(), isDeleted :true}
   try{

@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router();
 const {createAuthor, login} = require("../controller/authorController")
 
-const { authenticate, authorize } = require("../middleware/auth")
+const { authenticate, authorize, createBlogAuth } = require("../middleware/auth")
 
 const { 
     createBlog,
@@ -19,7 +19,7 @@ router.post('/authors',createAuthor)
 router.post('/login', login)
 
 // Create Blog
-router.post('/blogs', authenticate, createBlog)
+router.post('/blogs', createBlogAuth, createBlog)
 
 // Get All Blog
 router.get('/blogs', authenticate, blogs)
