@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const validator = require('validator')
+
 const authorSchema = new mongoose.Schema({
-    
         fname : {
             type : String,
             required : true
@@ -19,12 +18,7 @@ const authorSchema = new mongoose.Schema({
             type : String,
             required : true,
             unique : true,
-            // validate: [ email, 'invalid email' ],
-
-            validate: {
-                validator: (value) => validator.isEmail(value),
-                message: (props) => `${props.value} is not a valid email address.`
-              }
+            match: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
         },
         password : {
             type : String,
