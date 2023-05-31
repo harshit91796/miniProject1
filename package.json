@@ -1,21 +1,29 @@
 {
-  "name": "project1",
+  "name": "titaniumaplus",
   "version": "1.0.0",
-  "description": "",
+  "description": "repo for assignments and practice problems",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon src/index.js"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sabihak89/titaniumaplus.git"
+  },
+  "author": "functionUp",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sabihak89/titaniumaplus/issues"
+  },
+  "homepage": "https://github.com/sabihak89/titaniumaplus#readme",
   "dependencies": {
-    "bcrypt": "^5.1.0",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.0",
-    "mongoose": "^7.2.1",
-    "nodemon": "^2.0.22",
-    "validator": "^13.9.0"
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "cors": "^2.8.5",
+    "mongoose": "^5.12.9"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
   }
 }
